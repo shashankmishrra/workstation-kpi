@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Live workstation KPIs: CPU, memory, disk, network and system." />
+    <meta name="color-scheme" content="dark" />
+    <title>Workstation KPIs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to dashboard</a>
+
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="icon-logo" viewBox="0 0 24 24">
+        <path d="M12 2 3 7v10l9 5 9-5V7z" />
+        <path d="m3 7 9 5 9-5M12 12v10M7.5 4.5v5M16.5 14.5v5" />
+      </symbol>
+      <symbol id="icon-dashboard" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="9" rx="1.5" />
+        <rect x="14" y="3" width="7" height="5" rx="1.5" />
+        <rect x="14" y="12" width="7" height="9" rx="1.5" />
+        <rect x="3" y="16" width="7" height="5" rx="1.5" />
+      </symbol>
+      <symbol id="icon-cog" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3" />
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+        />
+      </symbol>
+      <symbol id="icon-layers" viewBox="0 0 24 24">
+        <path d="m12 2 9 5-9 5-9-5 9-5z" />
+        <path d="m3 12 9 5 9-5M3 17l9 5 9-5" />
+      </symbol>
+      <symbol id="icon-disk" viewBox="0 0 24 24">
+        <path d="M22 12H2" />
+        <path
+          d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+        />
+        <path d="M6 16h.01M10 16h.01" />
+      </symbol>
+      <symbol id="icon-network" viewBox="0 0 24 24">
+        <rect x="16" y="16" width="6" height="6" rx="1" />
+        <rect x="2" y="16" width="6" height="6" rx="1" />
+        <rect x="9" y="2" width="6" height="6" rx="1" />
+        <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 12V8" />
+      </symbol>
+      <symbol id="icon-logs" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6M9 13h6M9 17h6" />
+      </symbol>
+      <symbol id="icon-cpu" viewBox="0 0 24 24">
+        <rect x="6" y="6" width="12" height="12" rx="2" />
+        <rect x="10" y="10" width="4" height="4" rx="1" />
+        <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" />
+      </symbol>
+      <symbol id="icon-memory" viewBox="0 0 24 24">
+        <rect x="3" y="7" width="18" height="10" rx="2" />
+        <path d="M7 17v2M12 17v2M17 17v2M7 5v2M12 5v2M17 5v2" />
+      </symbol>
+      <symbol id="icon-server" viewBox="0 0 24 24">
+        <rect x="2" y="3" width="20" height="7" rx="2" />
+        <rect x="2" y="14" width="20" height="7" rx="2" />
+        <path d="M6 6.5h.01M6 17.5h.01" />
+      </symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 16v-4M12 8h.01" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <path d="M8 3v4M16 3v4M3 10h18" />
+      </symbol>
+      <symbol id="icon-box" viewBox="0 0 24 24">
+        <path
+          d="M21 8.5v7a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4a2 2 0 0 1-1-1.73v-7a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4a2 2 0 0 1 1 1.73z"
+        />
+        <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+      </symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z" />
+      </symbol>
+      <symbol id="icon-arrow-down" viewBox="0 0 24 24">
+        <path d="M12 5v14M6 13l6 6 6-6" />
+      </symbol>
+      <symbol id="icon-arrow-up" viewBox="0 0 24 24">
+        <path d="M12 19V5M6 11l6-6 6 6" />
+      </symbol>
+      <symbol id="icon-trend-down" viewBox="0 0 24 24">
+        <path d="M22 17 13.5 8.5 8.5 13.5 2 7" />
+        <path d="M16 17h6v-6" />
+      </symbol>
+      <symbol id="icon-trend-up" viewBox="0 0 24 24">
+        <path d="M22 7 13.5 15.5 8.5 10.5 2 17" />
+        <path d="M16 7h6v6" />
+      </symbol>
+    </svg>
+
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <span class="sidebar__logo" aria-hidden="true">
+            <svg class="icon icon--lg"><use href="#icon-logo"></use></svg>
+          </span>
+          <span class="sidebar__product">
+            <span class="sidebar__name">Workstation</span>
+            <span class="sidebar__tagline">KPI Monitor</span>
+          </span>
+        </div>
+
+        <nav class="sidebar__nav nav" aria-label="Sections">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a class="nav__link nav__link--active" href="#main" aria-current="page">
+                <svg class="nav__icon icon"><use href="#icon-dashboard"></use></svg>
+                <span class="nav__label">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#card-system">
+                <svg class="nav__icon icon"><use href="#icon-cog"></use></svg>
+                <span class="nav__label">System</span>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#card-cpu">
+                <svg class="nav__icon icon"><use href="#icon-layers"></use></svg>
+                <span class="nav__label">Processes</span>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#card-disk">
+                <svg class="nav__icon icon"><use href="#icon-disk"></use></svg>
+                <span class="nav__label">Disk</span>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#card-network">
+                <svg class="nav__icon icon"><use href="#icon-network"></use></svg>
+                <span class="nav__label">Network</span>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#card-resource">
+                <svg class="nav__icon icon"><use href="#icon-logs"></use></svg>
+                <span class="nav__label">Logs</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar__status status" id="connection" data-state="loading">
+          <span class="status__dot" aria-hidden="true"></span>
+          <span class="status__text">
+            <span class="status__label" id="status-label">Connecting</span>
+            <span class="status__host" id="status-host" title="Hostname">&mdash;</span>
+          </span>
+        </div>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <div class="topbar__heading">
+            <p class="topbar__greeting" id="greeting">Welcome</p>
+            <h1 class="topbar__title">Workstation KPIs</h1>
+            <p class="topbar__meta">
+              <span class="topbar__host" id="meta-host">&mdash;</span>
+              <span class="topbar__dot" aria-hidden="true">&bull;</span>
+              <span class="topbar__os" id="meta-os">Linux</span>
+              <span class="topbar__dot" aria-hidden="true">&bull;</span>
+              <span class="topbar__live">Live Monitoring</span>
+            </p>
+          </div>
+
+          <div class="topbar__tools">
+            <div class="search">
+              <svg class="search__icon icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+              <label class="visually-hidden" for="metric-search">Search metrics</label>
+              <input
+                class="search__input"
+                id="metric-search"
+                type="search"
+                placeholder="Search metrics&hellip;"
+                autocomplete="off"
+              />
+              <kbd class="search__hint">Ctrl K</kbd>
+            </div>
+
+            <p class="pill pill--live" data-state="live">
+              <span class="pill__dot" aria-hidden="true"></span>
+              <span class="pill__label" id="live-label">Live</span>
+            </p>
+
+            <div class="clock">
+              <time class="clock__time" id="clock-time" datetime="">&mdash;</time>
+              <time class="clock__date" id="clock-date" datetime="">&mdash;</time>
+            </div>
+          </div>
+        </header>
+
+        <main class="dashboard" id="main" aria-busy="true">
+          <section class="card card--cpu" id="card-cpu" aria-labelledby="cpu-title">
+            <header class="card__header">
+              <span class="card__icon card__icon--cpu" aria-hidden="true">
+                <svg class="icon"><use href="#icon-cpu"></use></svg>
+              </span>
+              <div class="card__heading">
+                <h2 class="card__title" id="cpu-title">CPU</h2>
+                <p class="card__subtitle" id="cpu-model">&mdash;</p>
+              </div>
+              <span class="badge badge--normal" id="cpu-status">Normal</span>
+            </header>
+
+            <div class="card__body">
+              <div class="metric">
+                <p class="metric__value" id="cpu-usage">&mdash;</p>
+                <p class="metric__trend" id="cpu-trend" data-direction="flat">
+                  <svg class="metric__trend-icon icon" aria-hidden="true">
+                    <use id="cpu-trend-icon" href="#icon-trend-down"></use>
+                  </svg>
+                  <span class="metric__trend-value" id="cpu-trend-value">&mdash;</span>
+                  <span class="metric__trend-label">vs last 5m</span>
+                </p>
+              </div>
+
+              <div
+                class="bar"
+                id="cpu-bar"
+                role="progressbar"
+                aria-labelledby="cpu-title"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <span class="bar__fill" id="cpu-bar-fill"></span>
+              </div>
+
+              <div class="spark">
+                <svg
+                  class="spark__svg"
+                  id="cpu-spark"
+                  role="img"
+                  aria-label="CPU usage over the last five minutes"
+                  preserveAspectRatio="none"
+                ></svg>
+              </div>
+
+              <dl class="stats stats--three">
+                <div class="stat">
+                  <dt class="stat__label">Cores</dt>
+                  <dd class="stat__value" id="cpu-cores">&mdash;</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__label">Clock</dt>
+                  <dd class="stat__value" id="cpu-clock">&mdash;</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__label">Load (1m)</dt>
+                  <dd class="stat__value" id="cpu-load">&mdash;</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section class="card card--memory" id="card-memory" aria-labelledby="memory-title">
+            <header class="card__header">
+              <span class="card__icon card__icon--memory" aria-hidden="true">
+                <svg class="icon"><use href="#icon-memory"></use></svg>
+              </span>
+              <div class="card__heading">
+                <h2 class="card__title" id="memory-title">Memory</h2>
+                <p class="card__subtitle" id="memory-summary">&mdash;</p>
+              </div>
+              <span class="badge badge--normal" id="memory-status">Normal</span>
+            </header>
+
+            <div class="card__body">
+              <div class="metric">
+                <p class="metric__value" id="memory-usage">&mdash;</p>
+                <p class="metric__trend" id="memory-trend" data-direction="flat">
+                  <svg class="metric__trend-icon icon" aria-hidden="true">
+                    <use id="memory-trend-icon" href="#icon-trend-up"></use>
+                  </svg>
+                  <span class="metric__trend-value" id="memory-trend-value">&mdash;</span>
+                  <span class="metric__trend-label">vs last 5m</span>
+                </p>
+              </div>
+
+              <div
+                class="bar"
+                id="memory-bar"
+                role="progressbar"
+                aria-labelledby="memory-title"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <span class="bar__fill" id="memory-bar-fill"></span>
+              </div>
+
+              <div class="spark">
+                <svg
+                  class="spark__svg"
+                  id="memory-spark"
+                  role="img"
+                  aria-label="Memory usage over the last five minutes"
+                  preserveAspectRatio="none"
+                ></svg>
+              </div>
+
+              <dl class="stats">
+                <div class="stat">
+                  <dt class="stat__label">Total</dt>
+                  <dd class="stat__value" id="memory-total">&mdash;</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__label">Used</dt>
+                  <dd class="stat__value" id="memory-used">&mdash;</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__label">Free</dt>
+                  <dd class="stat__value" id="memory-free">&mdash;</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__label">Swap</dt>
+                  <dd class="stat__value" id="memory-swap">&mdash;</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section class="card card--disk" id="card-disk" aria-labelledby="disk-title">
+            <header class="card__header">
+              <span class="card__icon card__icon--disk" aria-hidden="true">
+                <svg class="icon"><use href="#icon-disk"></use></svg>
+              </span>
+              <div class="card__heading">
+                <h2 class="card__title" id="disk-title">Disk</h2>
+                <p class="card__subtitle" id="disk-summary">&mdash;</p>
+              </div>
+              <span class="badge badge--normal" id="disk-status">Normal</span>
+            </header>
+
+            <div class="card__body">
+              <div class="metric metric--compact">
+                <p class="metric__value" id="disk-usage">&mdash;</p>
+              </div>
+
+              <div
+                class="bar"
+                id="disk-bar"
+                role="progressbar"
+                aria-labelledby="disk-title"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <span class="bar__fill" id="disk-bar-fill"></span>
+              </div>
+
+              <ul class="disk" id="disk-list"></ul>
+            </div>
+          </section>
+
+          <div class="dashboard__side">
+            <section class="card card--network" id="card-network" aria-labelledby="network-title">
+              <header class="card__header">
+                <span class="card__icon card__icon--network" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-network"></use></svg>
+                </span>
+                <div class="card__heading">
+                  <h2 class="card__title" id="network-title">Network</h2>
+                  <p class="card__subtitle" id="network-summary">&mdash;</p>
+                </div>
+              </header>
+
+              <div class="card__body">
+                <div class="network">
+                  <span class="network__iface" id="network-iface">eth0</span>
+                  <span class="pill pill--up" id="network-state" data-state="down">DOWN</span>
+                </div>
+
+                <div class="spark spark--sm">
+                  <svg
+                    class="spark__svg"
+                    id="network-spark"
+                    role="img"
+                    aria-label="Network throughput over the last five minutes"
+                    preserveAspectRatio="none"
+                  ></svg>
+                </div>
+
+                <dl class="stats">
+                  <div class="stat">
+                    <dt class="stat__label">
+                      <svg class="stat__icon icon" aria-hidden="true">
+                        <use href="#icon-arrow-down"></use>
+                      </svg>
+                      Download
+                    </dt>
+                    <dd class="stat__value stat__value--blue" id="network-rx">&mdash;</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat__label">
+                      <svg class="stat__icon icon" aria-hidden="true">
+                        <use href="#icon-arrow-up"></use>
+                      </svg>
+                      Upload
+                    </dt>
+                    <dd class="stat__value stat__value--purple" id="network-tx">&mdash;</dd>
+                  </div>
+                </dl>
+              </div>
+            </section>
+
+            <section class="card card--system" id="card-system" aria-labelledby="system-title">
+              <header class="card__header">
+                <span class="card__icon card__icon--system" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-server"></use></svg>
+                </span>
+                <div class="card__heading">
+                  <h2 class="card__title" id="system-title">System</h2>
+                  <p class="card__subtitle" id="system-summary">&mdash;</p>
+                </div>
+              </header>
+
+              <div class="card__body">
+                <dl class="info">
+                  <div class="info__item">
+                    <dt class="info__label">Hostname</dt>
+                    <dd class="info__value" id="system-hostname">&mdash;</dd>
+                  </div>
+                  <div class="info__item">
+                    <dt class="info__label">Kernel</dt>
+                    <dd class="info__value" id="system-kernel">&mdash;</dd>
+                  </div>
+                  <div class="info__item">
+                    <dt class="info__label">Uptime</dt>
+                    <dd class="info__value" id="system-uptime">&mdash;</dd>
+                  </div>
+                  <div class="info__item">
+                    <dt class="info__label">Platform</dt>
+                    <dd class="info__value" id="system-platform">&mdash;</dd>
+                  </div>
+                  <div class="info__item">
+                    <dt class="info__label">Server Time</dt>
+                    <dd class="info__value" id="system-time">&mdash;</dd>
+                  </div>
+                  <div class="info__item">
+                    <dt class="info__label">Timezone</dt>
+                    <dd class="info__value" id="system-timezone">&mdash;</dd>
+                  </div>
+                </dl>
+              </div>
+            </section>
+          </div>
+
+          <section class="card card--resource" id="card-resource" aria-labelledby="resource-title">
+            <header class="card__header card__header--split">
+              <div class="card__heading">
+                <span class="card__icon card__icon--resource" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-activity"></use></svg>
+                </span>
+                <div>
+                  <h2 class="card__title" id="resource-title">Resource Usage</h2>
+                  <p class="card__subtitle">Live resource usage (last 5 minutes)</p>
+                </div>
+              </div>
+              <ul class="legend">
+                <li class="legend__item">
+                  <span class="legend__swatch legend__swatch--cpu" aria-hidden="true"></span>CPU
+                </li>
+                <li class="legend__item">
+                  <span class="legend__swatch legend__swatch--memory" aria-hidden="true"></span>Memory
+                </li>
+                <li class="legend__item">
+                  <span class="legend__swatch legend__swatch--disk" aria-hidden="true"></span>Disk
+                </li>
+              </ul>
+            </header>
+
+            <div class="card__body">
+              <svg
+                class="chart"
+                id="resource-chart"
+                role="img"
+                aria-label="Line chart of CPU, memory and disk usage over the last five minutes"
+              ></svg>
+            </div>
+          </section>
+
+          <section class="card card--quick" id="card-quick" aria-labelledby="quick-title">
+            <header class="card__header">
+              <span class="card__icon card__icon--info" aria-hidden="true">
+                <svg class="icon"><use href="#icon-info"></use></svg>
+              </span>
+              <div class="card__heading">
+                <h2 class="card__title" id="quick-title">Quick Info</h2>
+                <p class="card__subtitle">Key metrics at a glance</p>
+              </div>
+            </header>
+
+            <div class="card__body">
+              <div class="quick">
+                <div class="quick__tile">
+                  <span class="quick__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-clock"></use></svg>
+                  </span>
+                  <span class="quick__label">Uptime</span>
+                  <strong class="quick__value" id="quick-uptime">&mdash;</strong>
+                </div>
+                <div class="quick__tile">
+                  <span class="quick__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-box"></use></svg>
+                  </span>
+                  <span class="quick__label">Platform</span>
+                  <strong class="quick__value" id="quick-platform">&mdash;</strong>
+                </div>
+                <div class="quick__tile">
+                  <span class="quick__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-calendar"></use></svg>
+                  </span>
+                  <span class="quick__label">Server Time</span>
+                  <strong class="quick__value" id="quick-time">&mdash;</strong>
+                </div>
+                <div class="quick__tile">
+                  <span class="quick__icon" aria-hidden="true">
+                    <svg class="icon"><use href="#icon-globe"></use></svg>
+                  </span>
+                  <span class="quick__label">Timezone</span>
+                  <strong class="quick__value" id="quick-timezone">&mdash;</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer class="footer">
+          <p class="footer__note">
+            Sampling every <span id="poll-interval">3</span>s &middot; Built with Bun
+          </p>
+          <p class="footer__note footer__note--end">Keep building &#128640;</p>
+        </footer>
+      </div>
+    </div>
+
+    <p class="visually-hidden" id="announcer" role="status" aria-live="polite"></p>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
