@@ -39,6 +39,13 @@ Real-time CPU, memory, disk, network and system metrics — served by a tiny Bun
 
 ## Quick start
 
+## Run with Docker
+
+Build and start the dashboard with Docker Compose:
+
+```bash
+docker compose up -d --build
+
 Requires [Bun](https://bun.sh) `>= 1.1`.
 
 ```bash
