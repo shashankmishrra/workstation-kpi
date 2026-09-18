@@ -1,0 +1,11 @@
+services:
+  workstation-kpi:
+    build: .
+    image: workstation-kpi:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - HOST_ROOT=/host
+      - PORT=3000
+    volumes:
+      - /:/host:ro,rslave

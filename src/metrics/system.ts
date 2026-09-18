@@ -4,8 +4,10 @@
  * @module metrics/system
  */
 
+import { readFileSync } from "node:fs";
 import os from "node:os";
 import si from "systeminformation";
+import { HOST_ROOT, hostPath, parseOsRelease } from "../hostfs";
 
 /** System information KPIs exposed to the dashboard. */
 export interface SystemMetrics {
@@ -41,9 +43,6 @@ export interface SystemInput {
 
 /**
  * Pure transform from raw OS values into the public system shape.
- *
- * @param input - Raw values gathered from the OS / `systeminformation`.
- * @returns A normalised {@link SystemMetrics} object.
  */
 export const buildSystemMetrics = (input: SystemInput): SystemMetrics => ({
   hostname: input.hostname,
@@ -58,18 +57,43 @@ export const buildSystemMetrics = (input: SystemInput): SystemMetrics => ({
 
 /**
  * Gather live system metrics from the workstation.
- *
- * @returns A promise resolving to the current {@link SystemMetrics}.
  */
 export const getSystemMetrics = async (): Promise<SystemMetrics> => {
   const info = await si.osInfo();
   const now = new Date();
 
+  let hostname = info.hostname || os.hostname();
+  let distro = info.distro || info.platform;
+  let kernel = info.kernel;
+
+  if (HOST_ROOT) {
+    try {
+      hostname = readFileSync(hostPath("/etc/hostname"), "utf8").trim() || hostname;
+    } catch {
+      // Keep the systeminformation value.
+    }
+
+    try {
+      const osRelease = readFileSync(hostPath("/etc/os-release"), "utf8");
+
+      const parsed = parseOsRelease(osRelease);
+      distro = parsed.PRETTY_NAME || distro;
+    } catch {
+      // Keep the systeminformation value.
+    }
+
+    try {
+      kernel = readFileSync(hostPath("/proc/sys/kernel/osrelease"), "utf8").trim() || kernel;
+    } catch {
+      // Keep the systeminformation value.
+    }
+  }
+
   return buildSystemMetrics({
-    hostname: info.hostname || os.hostname(),
-    distro: info.distro || info.platform,
+    hostname,
+    distro,
     platform: info.platform,
-    kernel: info.kernel,
+    kernel,
     arch: info.arch || os.arch(),
     uptimeSeconds: os.uptime(),
     time: now,
